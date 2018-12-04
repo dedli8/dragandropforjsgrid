@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+            integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+            crossorigin="anonymous"></script>
+    <link type="text/css" rel="stylesheet" href="jsgrid.min.css"/>
+    <link type="text/css" rel="stylesheet" href="jsgrid-theme.min.css"/>
+    <script type="text/javascript" src="jsgrid.min.js"></script>
+</head>
+<body>
+<div id="jsGrid" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+<div id="jsGrid2" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+<div id="jsGrid3" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+<script>
+    var clients = [
+        {"Name": "Otto Clay", "Age": 25, "Country": 1, "Address": "Ap #897-1459 Quam Avenue", "Married": true},
+        {"Name": "Connor Johnston", "Age": 45, "Country": 2, "Address": "Ap #370-4647 Dis Av.", "Married": true},
+        {"Name": "Lacey Hess", "Age": 29, "Country": 3, "Address": "Ap #365-8835 Integer St.", "Married": false},
+        {"Name": "Timothy Henson", "Age": 56, "Country": 1, "Address": "911-5143 Luctus Ave", "Married": true},
+        {"Name": "Ramona Benton", "Age": 32, "Country": 3, "Address": "Ap #614-689 Vehicula Street", "Married": false}
+    ];
+
+    var countries = [
+        {Name: "", Id: 0},
+        {Name: "United States", Id: 1},
+        {Name: "Canada", Id: 2},
+        {Name: "United Kingdom", Id: 3}
+    ];
+
+    $("#jsGrid").jsGrid({
+        width: "100%",
+        height: "400px",
+
+        inserting: true,
+        editing: true,
+        sorting: true,
+        paging: true,
+        confirmDeleting: false,
+
+        data: clients,
+
+        fields: [
+            {name: "Name", type: "text", width: 150, validate: "required"},
+            {name: "Age", type: "number", width: 50},
+            {name: "Address", type: "text", width: 200},
+            {name: "Country", type: "select", items: countries, valueField: "Id", textField: "Name"},
+            {name: "Married", type: "checkbox", title: "Is Married", sorting: false},
+            {type: "control"}
+        ]
+    });
+    var clients2 = [
+        {"Name": "Tim", "Age": 18, "Country": 2, "Address": "kinffcc", "Married": false},
+        {"Name": "Justin", "Age": 35, "Country": 3, "Address": "dlksndcsn", "Married": true},
+        {"Name": "Pols", "Age": 21, "Country": 1, "Address": "v;lcksvlj", "Married": false},
+        {"Name": "Jemi", "Age": 60, "Country": 2, "Address": "sndfvnfdkvnkj", "Married": true},
+        {"Name": "Kim", "Age": 24, "Country": 3, "Address": "jdksbjkvbgfjbv", "Married": false}
+    ];
+
+    var clients3 = [
+        {"Name": "Antoha", "Age": 18, "Country": 2, "Address": "kinffcc", "Married": false},
+        {"Name": "Dima", "Age": 35, "Country": 3, "Address": "dlksndcsn", "Married": true},
+        {"Name": "Lewa", "Age": 21, "Country": 1, "Address": "v;lcksvlj", "Married": false},
+        {"Name": "Sawa", "Age": 60, "Country": 2, "Address": "sndfvnfdkvnkj", "Married": true},
+        {"Name": "Natawa", "Age": 24, "Country": 3, "Address": "jdksbjkvbgfjbv", "Married": false}
+    ];
+
+    $("#jsGrid2").jsGrid({
+        width: "100%",
+        height: "400px",
+
+        inserting: true,
+        editing: true,
+        sorting: true,
+        paging: true,
+        confirmDeleting: false,
+        data: clients2,
+
+        fields: [
+            {name: "Name", type: "text", width: 150, validate: "required"},
+            {name: "Age", type: "number", width: 50},
+            {name: "Address", type: "text", width: 200},
+            {name: "Country", type: "select", items: countries, valueField: "Id", textField: "Name"},
+            {name: "Married", type: "checkbox", title: "Is Married", sorting: false},
+            {type: "control"}
+        ]
+    });
+
+    $("#jsGrid3").jsGrid({
+        width: "100%",
+        height: "400px",
+
+        inserting: true,
+        editing: true,
+        sorting: true,
+        paging: true,
+        confirmDeleting: false,
+        data: clients3,
+
+        fields: [
+            {name: "Name", type: "text", width: 150, validate: "required"},
+            {name: "Age", type: "number", width: 50},
+            {name: "Address", type: "text", width: 200},
+            {name: "Country", type: "select", items: countries, valueField: "Id", textField: "Name"},
+            {name: "Married", type: "checkbox", title: "Is Married", sorting: false},
+            {type: "control"}
+        ]
+    });
+</script>
+<script>
+    let deletedItem = {},
+        currentRow = '',
+        currentGrid = '';
+
+    function getDataFromRow(e) {
+        let currentCountry = $(e.target).find('td:nth-child(4)').text();
+        countries.forEach(function (item) {
+            if (item.Name == currentCountry) {
+                currentCountry = item.Id;
+            }
+            ;
+        });
+        deletedItem = {
+            Name: $(e.target).find('td:first-child').text(),
+            Age: $(e.target).find('td:nth-child(2)').text(),
+            Address: $(e.target).find('td:nth-child(3)').text(),
+            Country: currentCountry,
+            Married: $(e.target).find('td:nth-child(5) input').prop("checked"),
+            type: "control"
+        };
+        return deletedItem;
+    }
+
+    function allowDrop(e) {
+        e.preventDefault();
+    }
+
+    function drag() {
+        $('.jsgrid-row, .jsgrid-alt-row').attr("draggable", "true").on('dragstart', function (e) {
+            currentRow = $(this);
+            currentGrid = $(this).parents(".jsgrid");
+            getDataFromRow(e);
+        });
+    }
+
+    function drop(e) {
+        e.preventDefault();
+        $(e.target).parents('.jsgrid').jsGrid("insertItem", deletedItem).done(function () {
+            currentGrid.jsGrid("deleteItem", currentRow);
+        });
+        drag();
+    }
+
+    $(function () {
+        drag();
+    });
+</script>
+</body>
+</html>
